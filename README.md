@@ -1,73 +1,114 @@
-# React + TypeScript + Vite
+# 🚀 CI/CD Setup Guide (React + Docker + GitHub Actions + Render)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This guide explains how to set up a full CI/CD pipeline using Docker, GitHub Actions, Docker Hub, and Render.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+# 🧱 1. Create React Project
 
-## React Compiler
+- Create a React app (e.g., using Vite)
+- Install dependencies
+- Make sure the app runs locally
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+# 🐳 2. Prepare Docker
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Add a Dockerfile in your project root
+- Configure it to run your React app
+- Make sure the app runs on a specific port (e.g., 5173)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+# 🧪 3. Test Docker Locally
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- Build your Docker image
+- Run the container
+- Open your browser and confirm the app is working
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+# 🌐 4. Push Project to GitHub
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- Initialize git repository
+- Commit your code
+- Push to GitHub (main branch)
+
+---
+
+# 📦 5. Create Docker Hub Repository
+
+- Go to Docker Hub
+- Create a new repository
+- Note your repository name (e.g., username/app-name)
+
+---
+
+# 🔐 6. Add GitHub Secrets
+
+Go to:
+
+GitHub Repository → Settings → Secrets → Actions
+
+Add the following:
+
+- DOCKER_USERNAME → your Docker Hub username  
+- DOCKER_PASSWORD → your Docker Hub password  
+- DOCKER_IMAGE → your Docker Hub image name  
+- RENDER_DEPLOY_HOOK → your Render deploy hook URL  
+
+---
+
+# ⚙️ 7. Setup GitHub Actions
+
+- Create a workflow file inside `.github/workflows/`
+- Configure it to:
+  - Build Docker image
+  - Push image to Docker Hub
+  - Trigger Render deploy
+
+---
+
+# 🌐 8. Setup Render
+
+- Go to Render Dashboard
+- Create a new Web Service
+- Select Docker as environment
+- Choose deploy via Docker Image
+- Enter your Docker Hub image URL
+
+---
+
+# 🔥 9. Enable Auto Deployment
+
+- Go to your Render service settings
+- Generate a Deploy Hook
+- Add that hook URL to GitHub Secrets
+
+---
+
+# 🚀 10. Deploy
+
+- Push any change to GitHub
+- GitHub Actions will:
+  - Build Docker image
+  - Push to Docker Hub
+  - Trigger Render deploy
+
+---
+
+# 🎉 Result
+
+Your app will be automatically deployed every time you push code.
+
+---
+
+# 📌 CI/CD Flow
+
+GitHub → GitHub Actions → Docker Hub → Render → Live App
+
+---
+
+# 🏁 Done!
+
+You now have a fully automated CI/CD pipeline 🚀
