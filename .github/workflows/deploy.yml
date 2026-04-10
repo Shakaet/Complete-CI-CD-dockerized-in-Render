@@ -21,3 +21,5 @@ jobs:
 
       - name: Push Docker Image
         run: docker push ${{ secrets.DOCKER_IMAGE }}:latest
+      - name: Trigger Render Deploy                             # ← ADD
+        run: curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
